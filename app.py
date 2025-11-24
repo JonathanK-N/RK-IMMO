@@ -13,15 +13,15 @@ CORS(app)
 
 def create_tables():
     with app.app_context():
-    db.create_all()
-    # Ajouter des données de démonstration
-    if Propriete.query.count() == 0:
-        demo_properties = [
+        db.create_all()
+        # Ajouter des données de démonstration
+        if Propriete.query.count() == 0:
+            demo_properties = [
             Propriete(
                 titre="Villa Moderne avec Piscine",
                 description="Magnifique villa contemporaine avec piscine privée, jardin paysager et vue panoramique.",
                 prix=450000,
-                localisation="Sherbrooke, QC",
+                localisation="Gombe, Kinshasa",
                 chambres=4,
                 salles_bain=3,
                 type_propriete="Villa",
@@ -32,7 +32,7 @@ def create_tables():
                 titre="Appartement Centre-Ville",
                 description="Appartement moderne au cœur de la ville, proche de tous les services.",
                 prix=280000,
-                localisation="Montréal, QC",
+                localisation="Limete, Kinshasa",
                 chambres=2,
                 salles_bain=2,
                 type_propriete="Appartement",
@@ -43,17 +43,17 @@ def create_tables():
                 titre="Maison Familiale",
                 description="Parfaite pour une famille, avec grand jardin et garage double.",
                 prix=320000,
-                localisation="Québec, QC",
+                localisation="Bandalungwa, Kinshasa",
                 chambres=3,
                 salles_bain=2,
                 type_propriete="Maison",
                 surface=180,
                 images="https://images.unsplash.com/photo-1570129477492-45c003edd2be,https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e"
             )
-        ]
-        for prop in demo_properties:
-            db.session.add(prop)
-        db.session.commit()
+            ]
+            for prop in demo_properties:
+                db.session.add(prop)
+            db.session.commit()
 
 # Routes Frontend
 @app.route('/')
@@ -67,6 +67,10 @@ def proprietes():
 @app.route('/propriete/<int:id>')
 def propriete_detail(id):
     return render_template('propriete_detail.html')
+
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
 
 # API Routes
 @app.route('/api/properties')

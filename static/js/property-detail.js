@@ -84,8 +84,9 @@ async function loadPropertyDetails() {
                     
                     <div style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e9ecef;">
                         <h4>Contactez-nous</h4>
-                        <p><i class="fas fa-phone"></i> +1 (819) 123-4567</p>
-                        <p><i class="fas fa-envelope"></i> contact@rkimmo.ca</p>
+                        <p><i class="fas fa-phone"></i> +243 81 234 5678</p>
+                        <p><i class="fas fa-envelope"></i> contact@rkimmo.cd</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Gombe, Kinshasa</p>
                     </div>
                 </div>
             </div>

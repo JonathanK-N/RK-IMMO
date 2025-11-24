@@ -1,17 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero__content">
-        <div class="hero__text">
-            <h1 class="hero__title">Trouvez Votre Propriété de Rêve</h1>
-            <p class="hero__subtitle">Découvrez notre sélection exclusive de propriétés de prestige</p>
+<section class="hero-carousel">
+    <div class="carousel__container">
+        <div class="carousel__slide active" data-bg="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&auto=format&fit=crop&w=1973&q=80">
+            <div class="slide__content">
+                <h1 class="slide__title">Immobilier de Prestige à Kinshasa</h1>
+                <p class="slide__subtitle">Découvrez les plus belles propriétés de la capitale</p>
+                <a href="/proprietes" class="slide__btn">Découvrir</a>
+            </div>
         </div>
         
+        <div class="carousel__slide" data-bg="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-4.0.3&auto=format&fit=crop&w=2075&q=80">
+            <div class="slide__content">
+                <h1 class="slide__title">Villas Modernes avec Piscine</h1>
+                <p class="slide__subtitle">Luxe et confort dans les meilleurs quartiers</p>
+                <a href="/proprietes?type=Villa" class="slide__btn">Voir les Villas</a>
+            </div>
+        </div>
+        
+        <div class="carousel__slide" data-bg="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80">
+            <div class="slide__content">
+                <h1 class="slide__title">Appartements Standing</h1>
+                <p class="slide__subtitle">Vie urbaine de qualité au cœur de Kinshasa</p>
+                <a href="/proprietes?type=Appartement" class="slide__btn">Voir les Appartements</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="carousel__nav">
+        <button class="carousel__btn carousel__prev"><i class="fas fa-chevron-left"></i></button>
+        <button class="carousel__btn carousel__next"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    
+    <div class="carousel__dots">
+        <span class="dot active" data-slide="0"></span>
+        <span class="dot" data-slide="1"></span>
+        <span class="dot" data-slide="2"></span>
+    </div>
+    
+    <div class="search__overlay">
         <div class="search__container">
             <form class="search__form" id="search-form">
                 <div class="search__group">
-                    <input type="text" placeholder="Localisation" class="search__input" id="search-location">
+                    <input type="text" placeholder="Commune (Gombe, Limete...)" class="search__input" id="search-location">
                 </div>
                 <div class="search__group">
                     <select class="search__input" id="search-type">
@@ -22,7 +54,7 @@
                     </select>
                 </div>
                 <div class="search__group">
-                    <input type="number" placeholder="Prix max" class="search__input" id="search-price">
+                    <input type="number" placeholder="Budget max (USD)" class="search__input" id="search-price">
                 </div>
                 <button type="submit" class="search__btn">
                     <i class="fas fa-search"></i>
@@ -31,7 +63,6 @@
             </form>
         </div>
     </div>
-    <div class="hero__bg"></div>
 </section>
 
 <section class="featured section">
@@ -45,22 +76,57 @@
 
 <section class="services section">
     <div class="container">
-        <h2 class="section__title">Nos Services</h2>
+        <h2 class="section__title">Nos Services à Kinshasa</h2>
         <div class="services__container">
             <div class="service__card">
                 <i class="fas fa-home service__icon"></i>
                 <h3>Vente</h3>
-                <p>Accompagnement personnalisé pour la vente de votre propriété</p>
+                <p>Accompagnement personnalisé pour la vente de votre propriété à Kinshasa</p>
             </div>
             <div class="service__card">
                 <i class="fas fa-key service__icon"></i>
                 <h3>Location</h3>
-                <p>Gestion locative complète et recherche de locataires qualifiés</p>
+                <p>Gestion locative complète dans tous les quartiers de Kinshasa</p>
             </div>
             <div class="service__card">
                 <i class="fas fa-chart-line service__icon"></i>
                 <h3>Évaluation</h3>
-                <p>Estimation gratuite et précise de la valeur de votre bien</p>
+                <p>Estimation gratuite selon le marché immobilier de Kinshasa</p>
+            </div>
+            <div class="service__card">
+                <i class="fas fa-handshake service__icon"></i>
+                <h3>Conseil</h3>
+                <p>Expertise du marché immobilier congolais et accompagnement juridique</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="about section">
+    <div class="container">
+        <div class="about__content">
+            <div class="about__text">
+                <h2>RK IMMO Kinshasa</h2>
+                <p class="about__subtitle">Votre partenaire immobilier de confiance depuis 2020</p>
+                <p>Spécialiste de l'immobilier de prestige à Kinshasa, nous connaissons parfaitement le marché local et les spécificités de chaque commune. De Gombe à Limete, en passant par Bandalungwa et Kintambo, nous vous accompagnons dans tous vos projets immobiliers.</p>
+                <div class="about__stats">
+                    <div class="stat__item">
+                        <h3>200+</h3>
+                        <p>Propriétés vendues</p>
+                    </div>
+                    <div class="stat__item">
+                        <h3>150+</h3>
+                        <p>Clients satisfaits</p>
+                    </div>
+                    <div class="stat__item">
+                        <h3>15</h3>
+                        <p>Communes couvertes</p>
+                    </div>
+                </div>
+                <a href="/contact" class="about__btn">Nous contacter</a>
+            </div>
+            <div class="about__image">
+                <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?ixlib=rb-4.0.3&auto=format&fit=crop&w=1926&q=80" alt="Équipe RK IMMO">
             </div>
         </div>
     </div>

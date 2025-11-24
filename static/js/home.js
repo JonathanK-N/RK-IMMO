@@ -42,12 +42,65 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
     window.location.href = `/proprietes?${params.toString()}`;
 });
 
-// Parallax effect pour le hero
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const heroBackground = document.querySelector('.hero__bg');
-    if (heroBackground) {
-        heroBackground.style.transform = `translateY(${scrolled * 0.5}px)`;
+// Carousel functionality
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel__slide');
+const dots = document.querySelectorAll('.dot');
+const totalSlides = slides.length;
+
+function updateCarousel() {
+    slides.forEach((slide, index) => {
+        slide.classList.toggle('active', index === currentSlide);
+        // Mettre à jour le background
+        if (index === currentSlide) {
+            slide.style.backgroundImage = `url(${slide.dataset.bg})`;
+        }
+    });
+    
+    dots.forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+    });
+}
+
+function nextSlide() {
+    currentSlide = (currentSlide + 1) % totalSlides;
+    updateCarousel();
+}
+
+function prevSlide() {
+    currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+    updateCarousel();
+}
+
+function goToSlide(index) {
+    currentSlide = index;
+    updateCarousel();
+}
+
+// Event listeners pour le carousel
+if (document.querySelector('.carousel__next')) {
+    document.querySelector('.carousel__next').addEventListener('click', nextSlide);
+    document.querySelector('.carousel__prev').addEventListener('click', prevSlide);
+    
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => goToSlide(index));
+    });
+    
+    // Auto-play du carousel
+    setInterval(nextSlide, 5000);
+    
+    // Initialiser le carousel
+    updateCarousel();
+}
+
+// Navigation au clavier pour le carousel
+document.addEventListener('keydown', (e) => {
+    if (document.querySelector('.hero-carousel')) {
+        if (e.key === 'ArrowLeft') {
+            prevSlide();
+        } else if (e.key === 'ArrowRight') {
+            nextSlide();
+        }
     }
 });
 

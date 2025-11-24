@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - RK IMMO{% endblock %}
+
+{% block content %}
+<section class="contact-header">
+    <div class="container">
+        <h1>Contactez-Nous</h1>
+        <p>Notre équipe est à votre disposition pour tous vos projets immobiliers à Kinshasa</p>
+    </div>
+</section>
+
+<section class="contact-content section">
+    <div class="container">
+        <div class="contact__grid">
+            <div class="contact__info">
+                <h2>RK IMMO Kinshasa</h2>
+                <p class="contact__description">
+                    Spécialiste de l'immobilier de prestige à Kinshasa, nous vous accompagnons dans tous vos projets : 
+                    achat, vente, location et gestion locative.
+                </p>
+                
+                <div class="contact__details">
+                    <div class="contact__item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Adresse</h4>
+                            <p>Avenue des Aviateurs, Gombe<br>Kinshasa, République Démocratique du Congo</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact__item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Téléphone</h4>
+                            <p>+243 81 234 5678<br>+243 99 876 5432</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact__item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>contact@rkimmo.cd<br>info@rkimmo.cd</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact__item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Horaires</h4>
+                            <p>Lun - Ven: 8h00 - 17h00<br>Sam: 9h00 - 13h00</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact__social">
+                    <h4>Suivez-nous</h4>
+                    <div class="social__links">
+                        <a href="#" class="social__link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social__link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social__link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social__link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="contact__form-container">
+                <form class="contact__form" id="contact-form">
+                    <h3>Envoyez-nous un message</h3>
+                    
+                    <div class="form__row">
+                        <div class="form__group">
+                            <input type="text" class="form__input" id="contact-name" placeholder="Nom complet" required>
+                        </div>
+                        <div class="form__group">
+                            <input type="email" class="form__input" id="contact-email" placeholder="Email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form__group">
+                        <input type="tel" class="form__input" id="contact-phone" placeholder="Téléphone">
+                    </div>
+                    
+                    <div class="form__group">
+                        <select class="form__input" id="contact-subject" required>
+                            <option value="">Sujet de votre demande</option>
+                            <option value="Achat">Achat d'une propriété</option>
+                            <option value="Vente">Vente d'une propriété</option>
+                            <option value="Location">Location</option>
+                            <option value="Gestion">Gestion locative</option>
+                            <option value="Evaluation">Évaluation</option>
+                            <option value="Autre">Autre</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form__group">
+                        <textarea class="form__input" id="contact-message" placeholder="Votre message" rows="6" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="form__btn">
+                        <i class="fas fa-paper-plane"></i>
+                        Envoyer le message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="map-section">
+    <div class="container">
+        <h2>Notre Localisation</h2>
+        <div class="map__container">
+            <div class="map__placeholder">
+                <i class="fas fa-map-marked-alt"></i>
+                <h3>Gombe, Kinshasa</h3>
+                <p>Avenue des Aviateurs<br>République Démocratique du Congo</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+{% endblock %}
