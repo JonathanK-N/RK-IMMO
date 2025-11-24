@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Détails Propriété - RK IMMO{% endblock %}
+
+{% block content %}
+<section class="property-detail">
+    <div class="container">
+        <div class="property__content" id="property-content">
+            <!-- Le contenu sera chargé dynamiquement -->
+        </div>
+    </div>
+</section>
+
+<!-- Modal Galerie -->
+<div class="modal" id="gallery-modal">
+    <div class="modal__content">
+        <span class="modal__close">&times;</span>
+        <div class="gallery__container">
+            <img class="gallery__image" id="gallery-image" src="" alt="">
+            <div class="gallery__nav">
+                <button class="gallery__btn gallery__prev" id="gallery-prev">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <button class="gallery__btn gallery__next" id="gallery-next">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+            <div class="gallery__thumbnails" id="gallery-thumbnails">
+                <!-- Vignettes générées dynamiquement -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Réservation -->
+<div class="modal" id="reservation-modal">
+    <div class="modal__content modal__content--form">
+        <span class="modal__close">&times;</span>
+        <h3>Demande de Visite</h3>
+        <form class="reservation__form" id="reservation-form">
+            <input type="hidden" id="property-id">
+            <div class="form__group">
+                <input type="text" class="form__input" id="client-name" placeholder="Nom complet" required>
+            </div>
+            <div class="form__group">
+                <input type="email" class="form__input" id="client-email" placeholder="Email" required>
+            </div>
+            <div class="form__group">
+                <input type="tel" class="form__input" id="client-phone" placeholder="Téléphone" required>
+            </div>
+            <div class="form__group">
+                <select class="form__input" id="request-type" required>
+                    <option value="">Type de demande</option>
+                    <option value="Visite">Demande de visite</option>
+                    <option value="Ferme">Offre ferme</option>
+                </select>
+            </div>
+            <div class="form__group">
+                <textarea class="form__input" id="client-message" placeholder="Message (optionnel)" rows="4"></textarea>
+            </div>
+            <button type="submit" class="form__btn">
+                <i class="fas fa-paper-plane"></i>
+                Envoyer la demande
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/property-detail.js') }}"></script>
+{% endblock %}

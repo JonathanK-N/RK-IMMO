@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero__content">
+        <div class="hero__text">
+            <h1 class="hero__title">Trouvez Votre Propriété de Rêve</h1>
+            <p class="hero__subtitle">Découvrez notre sélection exclusive de propriétés de prestige</p>
+        </div>
+        
+        <div class="search__container">
+            <form class="search__form" id="search-form">
+                <div class="search__group">
+                    <input type="text" placeholder="Localisation" class="search__input" id="search-location">
+                </div>
+                <div class="search__group">
+                    <select class="search__input" id="search-type">
+                        <option value="">Type de propriété</option>
+                        <option value="Villa">Villa</option>
+                        <option value="Appartement">Appartement</option>
+                        <option value="Maison">Maison</option>
+                    </select>
+                </div>
+                <div class="search__group">
+                    <input type="number" placeholder="Prix max" class="search__input" id="search-price">
+                </div>
+                <button type="submit" class="search__btn">
+                    <i class="fas fa-search"></i>
+                    Rechercher
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="hero__bg"></div>
+</section>
+
+<section class="featured section">
+    <div class="container">
+        <h2 class="section__title">Propriétés en Vedette</h2>
+        <div class="featured__container" id="featured-properties">
+            <!-- Les propriétés seront chargées dynamiquement -->
+        </div>
+    </div>
+</section>
+
+<section class="services section">
+    <div class="container">
+        <h2 class="section__title">Nos Services</h2>
+        <div class="services__container">
+            <div class="service__card">
+                <i class="fas fa-home service__icon"></i>
+                <h3>Vente</h3>
+                <p>Accompagnement personnalisé pour la vente de votre propriété</p>
+            </div>
+            <div class="service__card">
+                <i class="fas fa-key service__icon"></i>
+                <h3>Location</h3>
+                <p>Gestion locative complète et recherche de locataires qualifiés</p>
+            </div>
+            <div class="service__card">
+                <i class="fas fa-chart-line service__icon"></i>
+                <h3>Évaluation</h3>
+                <p>Estimation gratuite et précise de la valeur de votre bien</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

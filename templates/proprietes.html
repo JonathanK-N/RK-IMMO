@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Propriétés - RK IMMO{% endblock %}
+
+{% block content %}
+<section class="properties-header">
+    <div class="container">
+        <h1>Nos Propriétés</h1>
+        <p>Découvrez notre sélection complète de biens immobiliers</p>
+    </div>
+</section>
+
+<section class="properties section">
+    <div class="container">
+        <div class="filters__container">
+            <div class="filters__group">
+                <input type="text" placeholder="Localisation" class="filter__input" id="filter-location">
+            </div>
+            <div class="filters__group">
+                <select class="filter__input" id="filter-type">
+                    <option value="">Tous les types</option>
+                    <option value="Villa">Villa</option>
+                    <option value="Appartement">Appartement</option>
+                    <option value="Maison">Maison</option>
+                </select>
+            </div>
+            <div class="filters__group">
+                <input type="number" placeholder="Prix min" class="filter__input" id="filter-price-min">
+            </div>
+            <div class="filters__group">
+                <input type="number" placeholder="Prix max" class="filter__input" id="filter-price-max">
+            </div>
+            <button class="filter__btn" id="apply-filters">
+                <i class="fas fa-filter"></i>
+                Filtrer
+            </button>
+        </div>
+
+        <div class="properties__grid" id="properties-grid">
+            <!-- Les propriétés seront chargées dynamiquement -->
+        </div>
+
+        <div class="loading" id="loading" style="display: none;">
+            <i class="fas fa-spinner fa-spin"></i>
+            Chargement...
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/properties.js') }}"></script>
+{% endblock %}

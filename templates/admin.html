@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - RK IMMO</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body>
+    <div class="admin-container">
+        <h1>Administration RK IMMO</h1>
+        
+        <div class="admin-section">
+            <h2>Propriétés ({{ proprietes|length }})</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Titre</th>
+                            <th>Prix</th>
+                            <th>Localisation</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for propriete in proprietes %}
+                        <tr>
+                            <td>{{ propriete.id }}</td>
+                            <td>{{ propriete.titre }}</td>
+                            <td>{{ "{:,.0f}".format(propriete.prix) }} $</td>
+                            <td>{{ propriete.localisation }}</td>
+                            <td>{{ propriete.statut }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <h2>Réservations ({{ reservations|length }})</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Client</th>
+                            <th>Email</th>
+                            <th>Propriété</th>
+                            <th>Type</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.id }}</td>
+                            <td>{{ reservation.nom_client }}</td>
+                            <td>{{ reservation.email }}</td>
+                            <td>{{ reservation.propriete.titre }}</td>
+                            <td>{{ reservation.type_demande }}</td>
+                            <td>{{ reservation.date_demande.strftime('%d/%m/%Y') }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
