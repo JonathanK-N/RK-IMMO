@@ -364,8 +364,13 @@ def create_tables():
         print(f"Erreur initialisation DB: {e}")
         pass
 
+# Initialiser les tables au démarrage
+with app.app_context():
+    create_tables()
+
+# Variable pour Railway/Gunicorn
+application = app
+
 if __name__ == '__main__':
-    with app.app_context():
-        create_tables()
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=False)
