@@ -123,7 +123,7 @@ def send_whatsapp_notification(contact_data, property_info=None):
         message_parts.extend([
             "🏡 *BIEN CONCERNÉ:*",
             f"📍 *Titre:* {property_info.title}",
-            f"💰 *Prix:* {property_info.price:,.0f} $",
+            f"💰 *Prix:* ${property_info.price:,.0f} USD",
             f"📐 *Surface:* {property_info.surface} m²",
             f"🏙️ *Ville:* {property_info.city}",
             f"🔗 *Lien:* {request.url_root}property/{property_info.id}",
@@ -360,6 +360,71 @@ def create_tables():
             )
             db.session.add(admin)
             db.session.commit()
+        
+        # Ajouter des propriétés d'exemple si aucune n'existe
+        if Property.query.count() == 0:
+            properties_data = [
+                {
+                    'title': 'Magnifique Villa Moderne - Gombe, Kinshasa',
+                    'description': 'Superbe villa de 250m² située dans le quartier résidentiel de Gombe.',
+                    'price': 350000, 'property_type': 'Vente', 'category': 'Maison',
+                    'bedrooms': 4, 'bathrooms': 3, 'surface': 250,
+                    'city': 'Kinshasa', 'address': 'Avenue des Ambassades, Gombe',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1564013799919-ab600027ffc6']),
+                    'featured': True, 'available': True
+                },
+                {
+                    'title': 'Résidence de Luxe avec Piscine - Limete, Kinshasa',
+                    'description': 'Villa d\'architecte de 300m² sur un terrain de 1000m².',
+                    'price': 280000, 'property_type': 'Vente', 'category': 'Maison',
+                    'bedrooms': 6, 'bathrooms': 4, 'surface': 300,
+                    'city': 'Kinshasa', 'address': 'Avenue Lumumba, Limete',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1600596542815-ffad4c1539a9']),
+                    'featured': True, 'available': True
+                },
+                {
+                    'title': 'Appartement Moderne - Bandalungwa, Kinshasa',
+                    'description': 'Charmant appartement de 80m² entièrement rénové.',
+                    'price': 450, 'property_type': 'Location', 'category': 'Appartement',
+                    'bedrooms': 2, 'bathrooms': 2, 'surface': 80,
+                    'city': 'Kinshasa', 'address': 'Avenue Kasongo, Bandalungwa',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267']),
+                    'featured': False, 'available': True
+                },
+                {
+                    'title': 'Bureaux Standing - Centre-ville, Kinshasa',
+                    'description': 'Plateau de bureaux de 200m² dans immeuble moderne.',
+                    'price': 1200, 'property_type': 'Location', 'category': 'Bureau',
+                    'bedrooms': 0, 'bathrooms': 2, 'surface': 200,
+                    'city': 'Kinshasa', 'address': 'Boulevard du 30 Juin, Gombe',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1497366216548-37526070297c']),
+                    'featured': True, 'available': True
+                },
+                {
+                    'title': 'Appartement Familial - Lemba, Kinshasa',
+                    'description': 'Bel appartement de 120m² avec balcon.',
+                    'price': 85000, 'property_type': 'Vente', 'category': 'Appartement',
+                    'bedrooms': 3, 'bathrooms': 2, 'surface': 120,
+                    'city': 'Kinshasa', 'address': 'Avenue de l\'Université, Lemba',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1484154218962-a197022b5858']),
+                    'featured': False, 'available': True
+                },
+                {
+                    'title': 'Duplex Moderne - Ngaliema, Kinshasa',
+                    'description': 'Duplex atypique de 180m² dans résidence moderne.',
+                    'price': 800, 'property_type': 'Location', 'category': 'Appartement',
+                    'bedrooms': 3, 'bathrooms': 2, 'surface': 180,
+                    'city': 'Kinshasa', 'address': 'Avenue Ngaliema, Mont Ngafula',
+                    'images': json.dumps(['https://images.unsplash.com/photo-1586023492125-27b2c045efd7']),
+                    'featured': True, 'available': True
+                }
+            ]
+            
+            for prop_data in properties_data:
+                property = Property(**prop_data)
+                db.session.add(property)
+            db.session.commit()
+            
     except Exception as e:
         print(f"Erreur initialisation DB: {e}")
         pass
