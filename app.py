@@ -347,18 +347,22 @@ def chatbot():
 
 # Initialisation de la base de données
 def create_tables():
-    db.create_all()
-    
-    # Créer un admin par défaut
-    if not User.query.filter_by(username='admin').first():
-        admin = User(
-            username='admin',
-            email='admin@rk-immo.fr',
-            password_hash=generate_password_hash('admin123'),
-            is_admin=True
-        )
-        db.session.add(admin)
-        db.session.commit()
+    try:
+        db.create_all()
+        
+        # Créer un admin par défaut
+        if not User.query.filter_by(username='admin').first():
+            admin = User(
+                username='admin',
+                email='admin@rk-immo.cd',
+                password_hash=generate_password_hash('admin123'),
+                is_admin=True
+            )
+            db.session.add(admin)
+            db.session.commit()
+    except Exception as e:
+        print(f"Erreur initialisation DB: {e}")
+        pass
 
 if __name__ == '__main__':
     with app.app_context():
