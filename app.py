@@ -8,13 +8,13 @@ import json
 import urllib.parse
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'rk-immo-secret-key-2024'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///rk_immo.db'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'rk-immo-secret-key-2024')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///rk_immo.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 # Configuration WhatsApp
-WHATSAPP_NUMBER = '+243842465238'  # Votre numéro WhatsApp
+WHATSAPP_NUMBER = '+243842465238'
 
 db = SQLAlchemy(app)
 
