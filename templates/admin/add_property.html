@@ -1,0 +1,545 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Ajouter un Bien - Administration RK IMMO{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<div class="mb-8">
+    <div class="flex items-center mb-4">
+        <a href="{{ url_for('admin_properties') }}" 
+           class="text-gray-500 hover:text-gray-700 mr-4">
+            <i class="fas fa-arrow-left text-xl"></i>
+        </a>
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900">Ajouter un Bien</h1>
+            <p class="text-gray-600">Créez une nouvelle propriété dans votre catalogue</p>
+        </div>
+    </div>
+</div>
+
+<!-- Form -->
+<form method="POST" enctype="multipart/form-data" class="space-y-8" id="property-form">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <!-- Main Content -->
+        <div class="lg:col-span-2 space-y-8">
+            <!-- Basic Information -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Informations Générales</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-2">
+                            Titre du bien <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" 
+                               id="title" 
+                               name="title" 
+                               required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="Ex: Magnifique appartement Haussmannien - Paris 16ème">
+                    </div>
+                    
+                    <div>
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+                            Description <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="description" 
+                                  name="description" 
+                                  rows="6" 
+                                  required 
+                                  class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent resize-none"
+                                  placeholder="Décrivez le bien en détail..."></textarea>
+                        <div class="text-sm text-gray-500 mt-1">
+                            <span id="char-count">0</span> / 1000 caractères
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="property_type" class="block text-sm font-medium text-gray-700 mb-2">
+                                Type de transaction <span class="text-red-500">*</span>
+                            </label>
+                            <select id="property_type" 
+                                    name="property_type" 
+                                    required 
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Sélectionnez un type</option>
+                                <option value="Vente">Vente</option>
+                                <option value="Location">Location</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label for="category" class="block text-sm font-medium text-gray-700 mb-2">
+                                Catégorie <span class="text-red-500">*</span>
+                            </label>
+                            <select id="category" 
+                                    name="category" 
+                                    required 
+                                    class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Sélectionnez une catégorie</option>
+                                <option value="Appartement">Appartement</option>
+                                <option value="Maison">Maison</option>
+                                <option value="Bureau">Bureau</option>
+                                <option value="Local commercial">Local commercial</option>
+                                <option value="Terrain">Terrain</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Property Details -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Caractéristiques</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div>
+                        <label for="surface" class="block text-sm font-medium text-gray-700 mb-2">
+                            Surface (m²) <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" 
+                               id="surface" 
+                               name="surface" 
+                               required 
+                               min="1" 
+                               step="0.1"
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="120">
+                    </div>
+                    
+                    <div>
+                        <label for="bedrooms" class="block text-sm font-medium text-gray-700 mb-2">
+                            Chambres <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" 
+                               id="bedrooms" 
+                               name="bedrooms" 
+                               required 
+                               min="0" 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="3">
+                    </div>
+                    
+                    <div>
+                        <label for="bathrooms" class="block text-sm font-medium text-gray-700 mb-2">
+                            Salles de bain <span class="text-red-500">*</span>
+                        </label>
+                        <input type="number" 
+                               id="bathrooms" 
+                               name="bathrooms" 
+                               required 
+                               min="0" 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="2">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Location -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Localisation</h2>
+                
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label for="city" class="block text-sm font-medium text-gray-700 mb-2">
+                                Ville <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" 
+                                   id="city" 
+                                   name="city" 
+                                   required 
+                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                   placeholder="Paris">
+                        </div>
+                        
+                        <div>
+                            <label for="postal_code" class="block text-sm font-medium text-gray-700 mb-2">
+                                Code postal
+                            </label>
+                            <input type="text" 
+                                   id="postal_code" 
+                                   name="postal_code" 
+                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                   placeholder="75001">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label for="address" class="block text-sm font-medium text-gray-700 mb-2">
+                            Adresse complète <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" 
+                               id="address" 
+                               name="address" 
+                               required 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent"
+                               placeholder="25 Avenue Kléber">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Images -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Images</h2>
+                
+                <div class="space-y-6">
+                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-primary transition-colors duration-300" id="image-upload-area">
+                        <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                        <h3 class="text-lg font-medium text-gray-900 mb-2">Télécharger des images</h3>
+                        <p class="text-gray-600 mb-4">Glissez-déposez vos images ici ou cliquez pour sélectionner</p>
+                        <input type="file" 
+                               id="images" 
+                               name="images" 
+                               multiple 
+                               accept="image/*" 
+                               class="hidden">
+                        <button type="button" 
+                                onclick="document.getElementById('images').click()" 
+                                class="bg-primary hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300">
+                            Sélectionner des Images
+                        </button>
+                    </div>
+                    
+                    <div id="image-preview" class="grid grid-cols-2 md:grid-cols-4 gap-4 hidden">
+                        <!-- Image previews will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="space-y-8">
+            <!-- Price and Status -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Prix et Statut</h2>
+                
+                <div class="space-y-6">
+                    <div>
+                        <label for="price" class="block text-sm font-medium text-gray-700 mb-2">
+                            Prix (€) <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative">
+                            <input type="number" 
+                                   id="price" 
+                                   name="price" 
+                                   required 
+                                   min="0" 
+                                   step="1000"
+                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-primary focus:border-transparent"
+                                   placeholder="850000">
+                            <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                                <span class="text-gray-500 sm:text-sm">€</span>
+                            </div>
+                        </div>
+                        <div class="text-sm text-gray-500 mt-1" id="price-display">
+                            <!-- Price formatting will be displayed here -->
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="available" 
+                                   name="available" 
+                                   checked 
+                                   class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                            <label for="available" class="ml-2 text-sm font-medium text-gray-700">
+                                Bien disponible
+                            </label>
+                        </div>
+                        
+                        <div class="flex items-center">
+                            <input type="checkbox" 
+                                   id="featured" 
+                                   name="featured" 
+                                   class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                            <label for="featured" class="ml-2 text-sm font-medium text-gray-700">
+                                Mettre en vedette
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Additional Features -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-6">Équipements</h2>
+                
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="parking" name="features[]" value="parking" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="parking" class="ml-2 text-sm text-gray-700">Parking</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="garden" name="features[]" value="garden" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="garden" class="ml-2 text-sm text-gray-700">Jardin</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="terrace" name="features[]" value="terrace" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="terrace" class="ml-2 text-sm text-gray-700">Terrasse</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="pool" name="features[]" value="pool" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="pool" class="ml-2 text-sm text-gray-700">Piscine</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="elevator" name="features[]" value="elevator" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="elevator" class="ml-2 text-sm text-gray-700">Ascenseur</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="checkbox" id="cellar" name="features[]" value="cellar" class="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2">
+                        <label for="cellar" class="ml-2 text-sm text-gray-700">Cave</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Actions -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <div class="space-y-4">
+                    <button type="submit" 
+                            class="w-full bg-primary hover:bg-blue-800 text-white py-3 rounded-lg font-semibold transition-colors duration-300">
+                        <i class="fas fa-save mr-2"></i>
+                        Enregistrer le Bien
+                    </button>
+                    
+                    <button type="button" 
+                            id="save-draft"
+                            class="w-full bg-gray-500 hover:bg-gray-600 text-white py-3 rounded-lg font-semibold transition-colors duration-300">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        Sauvegarder en Brouillon
+                    </button>
+                    
+                    <a href="{{ url_for('admin_properties') }}" 
+                       class="block w-full text-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold transition-colors duration-300">
+                        <i class="fas fa-times mr-2"></i>
+                        Annuler
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Preview -->
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-4">Aperçu</h3>
+                <div class="text-sm text-gray-600 space-y-2" id="property-preview">
+                    <p><strong>Titre:</strong> <span id="preview-title">-</span></p>
+                    <p><strong>Type:</strong> <span id="preview-type">-</span></p>
+                    <p><strong>Prix:</strong> <span id="preview-price">-</span></p>
+                    <p><strong>Surface:</strong> <span id="preview-surface">-</span></p>
+                    <p><strong>Ville:</strong> <span id="preview-city">-</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Character counter for description
+const descriptionTextarea = document.getElementById('description');
+const charCount = document.getElementById('char-count');
+
+descriptionTextarea.addEventListener('input', function() {
+    const count = this.value.length;
+    charCount.textContent = count;
+    
+    if (count > 1000) {
+        charCount.classList.add('text-red-500');
+    } else {
+        charCount.classList.remove('text-red-500');
+    }
+});
+
+// Price formatting
+const priceInput = document.getElementById('price');
+const priceDisplay = document.getElementById('price-display');
+
+priceInput.addEventListener('input', function() {
+    const value = parseFloat(this.value);
+    if (!isNaN(value)) {
+        priceDisplay.textContent = new Intl.NumberFormat('fr-FR', {
+            style: 'currency',
+            currency: 'EUR',
+            minimumFractionDigits: 0
+        }).format(value);
+    } else {
+        priceDisplay.textContent = '';
+    }
+});
+
+// Image upload functionality
+const imageUploadArea = document.getElementById('image-upload-area');
+const imageInput = document.getElementById('images');
+const imagePreview = document.getElementById('image-preview');
+
+// Drag and drop functionality
+imageUploadArea.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    this.classList.add('border-primary', 'bg-blue-50');
+});
+
+imageUploadArea.addEventListener('dragleave', function(e) {
+    e.preventDefault();
+    this.classList.remove('border-primary', 'bg-blue-50');
+});
+
+imageUploadArea.addEventListener('drop', function(e) {
+    e.preventDefault();
+    this.classList.remove('border-primary', 'bg-blue-50');
+    
+    const files = e.dataTransfer.files;
+    handleImageFiles(files);
+});
+
+imageInput.addEventListener('change', function() {
+    handleImageFiles(this.files);
+});
+
+function handleImageFiles(files) {
+    imagePreview.innerHTML = '';
+    imagePreview.classList.remove('hidden');
+    
+    Array.from(files).forEach((file, index) => {
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'relative group';
+                imageDiv.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview ${index + 1}" class="w-full h-24 object-cover rounded-lg">
+                    <button type="button" class="absolute top-1 right-1 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" onclick="this.parentElement.remove()">
+                        <i class="fas fa-times text-xs"></i>
+                    </button>
+                `;
+                imagePreview.appendChild(imageDiv);
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+}
+
+// Real-time preview updates
+const previewElements = {
+    title: document.getElementById('preview-title'),
+    type: document.getElementById('preview-type'),
+    price: document.getElementById('preview-price'),
+    surface: document.getElementById('preview-surface'),
+    city: document.getElementById('preview-city')
+};
+
+function updatePreview() {
+    const title = document.getElementById('title').value || '-';
+    const type = document.getElementById('property_type').value || '-';
+    const price = document.getElementById('price').value;
+    const surface = document.getElementById('surface').value;
+    const city = document.getElementById('city').value || '-';
+    
+    previewElements.title.textContent = title;
+    previewElements.type.textContent = type;
+    previewElements.price.textContent = price ? new Intl.NumberFormat('fr-FR', {
+        style: 'currency',
+        currency: 'EUR',
+        minimumFractionDigits: 0
+    }).format(price) : '-';
+    previewElements.surface.textContent = surface ? `${surface} m²` : '-';
+    previewElements.city.textContent = city;
+}
+
+// Add event listeners for preview updates
+['title', 'property_type', 'price', 'surface', 'city'].forEach(id => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.addEventListener('input', updatePreview);
+        element.addEventListener('change', updatePreview);
+    }
+});
+
+// Form validation
+const form = document.getElementById('property-form');
+form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Basic validation
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            field.classList.remove('border-red-500');
+            field.classList.add('border-green-500');
+        }
+    });
+    
+    if (isValid) {
+        // Show loading state
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enregistrement...';
+        submitBtn.disabled = true;
+        
+        // Submit form (in real app, this would be an AJAX call)
+        setTimeout(() => {
+            alert('Bien enregistré avec succès !');
+            // window.location.href = "{{ url_for('admin_properties') }}";
+        }, 2000);
+    } else {
+        alert('Veuillez remplir tous les champs obligatoires');
+    }
+});
+
+// Save draft functionality
+document.getElementById('save-draft').addEventListener('click', function() {
+    const formData = new FormData(form);
+    formData.append('draft', 'true');
+    
+    // In a real application, this would save to the database
+    alert('Brouillon sauvegardé !');
+});
+
+// Auto-save functionality (every 30 seconds)
+let autoSaveInterval;
+function startAutoSave() {
+    autoSaveInterval = setInterval(() => {
+        const title = document.getElementById('title').value;
+        if (title.trim()) {
+            console.log('Auto-saving draft...');
+            // In a real application, this would save to the database
+        }
+    }, 30000);
+}
+
+// Start auto-save when user starts typing
+document.getElementById('title').addEventListener('input', function() {
+    if (!autoSaveInterval) {
+        startAutoSave();
+    }
+}, { once: true });
+
+// Cleanup auto-save on page unload
+window.addEventListener('beforeunload', function() {
+    if (autoSaveInterval) {
+        clearInterval(autoSaveInterval);
+    }
+});
+
+// Keyboard shortcuts
+document.addEventListener('keydown', function(e) {
+    // Ctrl/Cmd + S to save
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        form.querySelector('button[type="submit"]').click();
+    }
+    
+    // Ctrl/Cmd + D to save draft
+    if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        document.getElementById('save-draft').click();
+    }
+});
+</script>
+{% endblock %}

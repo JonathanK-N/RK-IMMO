@@ -1,0 +1,327 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Tableau de Bord - Administration RK IMMO{% endblock %}
+
+{% block content %}
+<!-- Dashboard Header -->
+<div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-2">Tableau de Bord</h1>
+    <p class="text-gray-600">Vue d'ensemble de votre activité immobilière</p>
+</div>
+
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Total Properties -->
+    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-primary transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Total Propriétés</p>
+                <p class="text-3xl font-bold text-gray-900">{{ total_properties }}</p>
+                <p class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    +12% ce mois
+                </p>
+            </div>
+            <div class="bg-primary/10 p-3 rounded-full">
+                <i class="fas fa-home text-2xl text-primary"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Available Properties -->
+    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-accent transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Biens Disponibles</p>
+                <p class="text-3xl font-bold text-gray-900">{{ available_properties }}</p>
+                <p class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-check-circle mr-1"></i>
+                    {{ "%.1f"|format((available_properties/total_properties*100) if total_properties > 0 else 0) }}% du total
+                </p>
+            </div>
+            <div class="bg-accent/10 p-3 rounded-full">
+                <i class="fas fa-key text-2xl text-accent"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Total Contacts -->
+    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-secondary transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Contacts Reçus</p>
+                <p class="text-3xl font-bold text-gray-900">{{ total_contacts }}</p>
+                <p class="text-sm text-blue-600 mt-1">
+                    <i class="fas fa-envelope mr-1"></i>
+                    +8% cette semaine
+                </p>
+            </div>
+            <div class="bg-secondary/10 p-3 rounded-full">
+                <i class="fas fa-envelope text-2xl text-secondary"></i>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Revenue -->
+    <div class="bg-white rounded-xl shadow-lg p-6 border-l-4 border-purple-500 transform hover:scale-105 transition-all duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 mb-1">Chiffre d'Affaires</p>
+                <p class="text-3xl font-bold text-gray-900">€125K</p>
+                <p class="text-sm text-green-600 mt-1">
+                    <i class="fas fa-chart-line mr-1"></i>
+                    +15% ce mois
+                </p>
+            </div>
+            <div class="bg-purple-100 p-3 rounded-full">
+                <i class="fas fa-euro-sign text-2xl text-purple-500"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts and Recent Activity -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <!-- Sales Chart -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Ventes Mensuelles</h2>
+            <div class="flex space-x-2">
+                <button class="px-3 py-1 text-sm bg-primary text-white rounded-lg">6M</button>
+                <button class="px-3 py-1 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">1A</button>
+            </div>
+        </div>
+        <div class="h-64 flex items-center justify-center bg-gray-50 rounded-lg">
+            <div class="text-center text-gray-500">
+                <i class="fas fa-chart-bar text-4xl mb-2"></i>
+                <p>Graphique des ventes</p>
+                <p class="text-sm">Intégration Chart.js à venir</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Property Types Distribution -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Répartition par Type</h2>
+        <div class="space-y-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-primary rounded mr-3"></div>
+                    <span class="text-gray-700">Appartements</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-900 font-semibold mr-2">45%</span>
+                    <div class="w-20 h-2 bg-gray-200 rounded-full">
+                        <div class="w-9 h-2 bg-primary rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-secondary rounded mr-3"></div>
+                    <span class="text-gray-700">Maisons</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-900 font-semibold mr-2">35%</span>
+                    <div class="w-20 h-2 bg-gray-200 rounded-full">
+                        <div class="w-7 h-2 bg-secondary rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-4 h-4 bg-accent rounded mr-3"></div>
+                    <span class="text-gray-700">Bureaux</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="text-gray-900 font-semibold mr-2">20%</span>
+                    <div class="w-20 h-2 bg-gray-200 rounded-full">
+                        <div class="w-4 h-2 bg-accent rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Contacts and Quick Actions -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- Recent Contacts -->
+    <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-gray-900">Contacts Récents</h2>
+            <a href="#" class="text-primary hover:text-blue-800 text-sm font-medium">Voir tout</a>
+        </div>
+        
+        {% if recent_contacts %}
+        <div class="space-y-4">
+            {% for contact in recent_contacts %}
+            <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center mr-4">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-900">{{ contact.name }}</h3>
+                        <p class="text-sm text-gray-600">{{ contact.email }}</p>
+                        <p class="text-xs text-gray-500">{{ contact.subject }}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-sm text-gray-500">{{ contact.created_at.strftime('%d/%m/%Y') }}</p>
+                    <p class="text-xs text-gray-400">{{ contact.created_at.strftime('%H:%M') }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-8 text-gray-500">
+            <i class="fas fa-inbox text-4xl mb-2"></i>
+            <p>Aucun contact récent</p>
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Quick Actions -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-xl font-bold text-gray-900 mb-6">Actions Rapides</h2>
+        
+        <div class="space-y-4">
+            <a href="{{ url_for('admin_add_property') }}" 
+               class="flex items-center p-4 bg-primary text-white rounded-lg hover:bg-blue-800 transition-colors duration-300">
+                <i class="fas fa-plus-circle text-xl mr-3"></i>
+                <div>
+                    <h3 class="font-semibold">Ajouter un Bien</h3>
+                    <p class="text-sm opacity-90">Nouveau bien immobilier</p>
+                </div>
+            </a>
+            
+            <a href="{{ url_for('admin_properties') }}" 
+               class="flex items-center p-4 bg-secondary text-white rounded-lg hover:bg-yellow-600 transition-colors duration-300">
+                <i class="fas fa-list text-xl mr-3"></i>
+                <div>
+                    <h3 class="font-semibold">Gérer les Biens</h3>
+                    <p class="text-sm opacity-90">Modifier ou supprimer</p>
+                </div>
+            </a>
+            
+            <a href="#" 
+               class="flex items-center p-4 bg-accent text-white rounded-lg hover:bg-green-600 transition-colors duration-300">
+                <i class="fas fa-envelope text-xl mr-3"></i>
+                <div>
+                    <h3 class="font-semibold">Messages</h3>
+                    <p class="text-sm opacity-90">Répondre aux contacts</p>
+                </div>
+            </a>
+            
+            <a href="#" 
+               class="flex items-center p-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors duration-300">
+                <i class="fas fa-chart-bar text-xl mr-3"></i>
+                <div>
+                    <h3 class="font-semibold">Rapports</h3>
+                    <p class="text-sm opacity-90">Statistiques détaillées</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Timeline -->
+<div class="mt-8 bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-6">Activité Récente</h2>
+    
+    <div class="relative">
+        <!-- Timeline line -->
+        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+        
+        <div class="space-y-6">
+            <div class="relative flex items-start">
+                <div class="absolute left-0 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-plus text-sm"></i>
+                </div>
+                <div class="ml-12">
+                    <h3 class="font-semibold text-gray-900">Nouveau bien ajouté</h3>
+                    <p class="text-sm text-gray-600">Appartement 3 pièces à Paris 15ème</p>
+                    <p class="text-xs text-gray-500">Il y a 2 heures</p>
+                </div>
+            </div>
+            
+            <div class="relative flex items-start">
+                <div class="absolute left-0 w-8 h-8 bg-secondary text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-envelope text-sm"></i>
+                </div>
+                <div class="ml-12">
+                    <h3 class="font-semibold text-gray-900">Nouveau contact reçu</h3>
+                    <p class="text-sm text-gray-600">Marie Dubois - Demande de visite</p>
+                    <p class="text-xs text-gray-500">Il y a 4 heures</p>
+                </div>
+            </div>
+            
+            <div class="relative flex items-start">
+                <div class="absolute left-0 w-8 h-8 bg-accent text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-handshake text-sm"></i>
+                </div>
+                <div class="ml-12">
+                    <h3 class="font-semibold text-gray-900">Vente conclue</h3>
+                    <p class="text-sm text-gray-600">Maison 4 pièces à Neuilly-sur-Seine</p>
+                    <p class="text-xs text-gray-500">Hier à 14:30</p>
+                </div>
+            </div>
+            
+            <div class="relative flex items-start">
+                <div class="absolute left-0 w-8 h-8 bg-purple-500 text-white rounded-full flex items-center justify-center">
+                    <i class="fas fa-edit text-sm"></i>
+                </div>
+                <div class="ml-12">
+                    <h3 class="font-semibold text-gray-900">Bien mis à jour</h3>
+                    <p class="text-sm text-gray-600">Prix modifié pour l'appartement Rue de Rivoli</p>
+                    <p class="text-xs text-gray-500">Hier à 10:15</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Auto-refresh dashboard data every 5 minutes
+setInterval(function() {
+    // In a real application, you would fetch updated data via AJAX
+    console.log('Refreshing dashboard data...');
+}, 300000);
+
+// Add click tracking for quick actions
+document.querySelectorAll('a[href*="admin"]').forEach(link => {
+    link.addEventListener('click', function() {
+        console.log('Quick action clicked:', this.textContent.trim());
+    });
+});
+
+// Animate counters on page load
+function animateCounters() {
+    const counters = document.querySelectorAll('.text-3xl.font-bold');
+    counters.forEach(counter => {
+        const target = parseInt(counter.textContent.replace(/[^\d]/g, ''));
+        if (target && !isNaN(target)) {
+            let current = 0;
+            const increment = target / 50;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    counter.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    counter.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        }
+    });
+}
+
+// Run counter animation on page load
+document.addEventListener('DOMContentLoaded', animateCounters);
+</script>
+{% endblock %}

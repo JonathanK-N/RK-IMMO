@@ -1,0 +1,399 @@
+{% extends "base.html" %}
+
+{% block title %}Propriétés - RK IMMO{% endblock %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-blue-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl font-bold mb-4 animate__animated animate__fadeInUp">Nos Propriétés</h1>
+        <p class="text-xl animate__animated animate__fadeInUp animate__delay-1s">Découvrez notre sélection de biens immobiliers exceptionnels</p>
+    </div>
+</section>
+
+<!-- Filters Section -->
+<section class="py-8 bg-white shadow-sm sticky top-16 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <form method="GET" class="grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Type</label>
+                <select name="type" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option value="">Tous types</option>
+                    <option value="Vente" {{ 'selected' if request.args.get('type') == 'Vente' }}>Vente</option>
+                    <option value="Location" {{ 'selected' if request.args.get('type') == 'Location' }}>Location</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Catégorie</label>
+                <select name="category" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option value="">Toutes catégories</option>
+                    <option value="Appartement" {{ 'selected' if request.args.get('category') == 'Appartement' }}>Appartement</option>
+                    <option value="Maison" {{ 'selected' if request.args.get('category') == 'Maison' }}>Maison</option>
+                    <option value="Bureau" {{ 'selected' if request.args.get('category') == 'Bureau' }}>Bureau</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Ville</label>
+                <select name="city" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option value="">Toutes villes</option>
+                    {% for city in cities %}
+                    <option value="{{ city }}" {{ 'selected' if request.args.get('city') == city }}>{{ city }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Prix min</label>
+                <input type="number" name="min_price" value="{{ request.args.get('min_price', '') }}" placeholder="0" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Prix max</label>
+                <input type="number" name="max_price" value="{{ request.args.get('max_price', '') }}" placeholder="1000000" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            
+            <div class="flex gap-2">
+                <button type="submit" class="flex-1 bg-primary hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300">
+                    <i class="fas fa-search mr-2"></i>
+                    Filtrer
+                </button>
+                <a href="{{ url_for('properties') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg font-semibold transition-colors duration-300">
+                    <i class="fas fa-times"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Properties Grid -->
+<section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Results Info -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-900">
+                    {{ properties.total }} bien{{ 's' if properties.total > 1 else '' }} trouvé{{ 's' if properties.total > 1 else '' }}
+                </h2>
+                <p class="text-gray-600">Page {{ properties.page }} sur {{ properties.pages }}</p>
+            </div>
+            
+            <!-- Sort Options -->
+            <div class="flex items-center space-x-4">
+                <label class="text-sm font-medium text-gray-700">Trier par:</label>
+                <select id="sort-select" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <option value="newest">Plus récent</option>
+                    <option value="price-asc">Prix croissant</option>
+                    <option value="price-desc">Prix décroissant</option>
+                    <option value="surface-desc">Surface décroissante</option>
+                </select>
+            </div>
+        </div>
+
+        {% if properties.items %}
+        <!-- Properties Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="properties-grid">
+            {% for property in properties.items %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden transform hover:scale-105 transition-all duration-300 property-card" 
+                 data-aos="fade-up" 
+                 data-aos-delay="{{ loop.index * 50 }}"
+                 data-price="{{ property.price }}"
+                 data-surface="{{ property.surface }}"
+                 data-date="{{ property.created_at.strftime('%Y-%m-%d') }}">
+                
+                <div class="relative">
+                    <!-- Property Image -->
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80" 
+                         alt="{{ property.title }}" 
+                         class="w-full h-64 object-cover">
+                    
+                    <!-- Property Type Badge -->
+                    <div class="absolute top-4 left-4">
+                        <span class="bg-primary text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {{ property.property_type }}
+                        </span>
+                    </div>
+                    
+                    <!-- Price Badge -->
+                    <div class="absolute top-4 right-4">
+                        <span class="bg-secondary text-white px-3 py-1 rounded-full text-sm font-semibold">
+                            {{ "{:,.0f}".format(property.price) }} $
+                        </span>
+                    </div>
+                    
+                    <!-- Category Badge -->
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-white/90 text-gray-800 px-3 py-1 rounded-full text-sm font-semibold">
+                            {{ property.category }}
+                        </span>
+                    </div>
+                    
+                    <!-- Favorite Button -->
+                    <button class="absolute bottom-4 right-4 bg-white/90 hover:bg-white text-gray-700 w-10 h-10 rounded-full flex items-center justify-center transition-colors duration-300 favorite-btn">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    <!-- Property Title -->
+                    <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">{{ property.title }}</h3>
+                    
+                    <!-- Location -->
+                    <p class="text-gray-600 mb-4 flex items-center">
+                        <i class="fas fa-map-marker-alt mr-2 text-primary"></i>
+                        {{ property.address }}, {{ property.city }}
+                    </p>
+                    
+                    <!-- Property Details -->
+                    <div class="grid grid-cols-3 gap-4 text-sm text-gray-500 mb-4">
+                        <div class="text-center">
+                            <i class="fas fa-bed text-primary mb-1 block"></i>
+                            <span>{{ property.bedrooms }} ch.</span>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-bath text-primary mb-1 block"></i>
+                            <span>{{ property.bathrooms }} SDB</span>
+                        </div>
+                        <div class="text-center">
+                            <i class="fas fa-ruler-combined text-primary mb-1 block"></i>
+                            <span>{{ property.surface }} m²</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Description Preview -->
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">{{ property.description }}</p>
+                    
+                    <!-- Action Buttons -->
+                    <div class="flex gap-2">
+                        <a href="{{ url_for('property_detail', id=property.id) }}" 
+                           class="flex-1 bg-primary hover:bg-blue-800 text-white text-center py-3 rounded-lg font-semibold transition-colors duration-300">
+                            Voir Détails
+                        </a>
+                        <button class="bg-secondary hover:bg-yellow-600 text-white px-4 py-3 rounded-lg transition-colors duration-300 contact-btn"
+                                data-property-id="{{ property.id }}"
+                                data-property-title="{{ property.title }}">
+                            <i class="fas fa-phone"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Pagination -->
+        {% if properties.pages > 1 %}
+        <div class="flex justify-center mt-12">
+            <nav class="flex items-center space-x-2">
+                {% if properties.has_prev %}
+                <a href="{{ url_for('properties', page=properties.prev_num, **request.args) }}" 
+                   class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                {% endif %}
+                
+                {% for page_num in properties.iter_pages() %}
+                    {% if page_num %}
+                        {% if page_num != properties.page %}
+                        <a href="{{ url_for('properties', page=page_num, **request.args) }}" 
+                           class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                            {{ page_num }}
+                        </a>
+                        {% else %}
+                        <span class="px-4 py-2 bg-primary text-white rounded-lg">{{ page_num }}</span>
+                        {% endif %}
+                    {% else %}
+                    <span class="px-4 py-2">…</span>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if properties.has_next %}
+                <a href="{{ url_for('properties', page=properties.next_num, **request.args) }}" 
+                   class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+                {% endif %}
+            </nav>
+        </div>
+        {% endif %}
+
+        {% else %}
+        <!-- No Results -->
+        <div class="text-center py-16">
+            <i class="fas fa-search text-6xl text-gray-300 mb-4"></i>
+            <h3 class="text-2xl font-bold text-gray-900 mb-4">Aucun bien trouvé</h3>
+            <p class="text-gray-600 mb-8">Essayez de modifier vos critères de recherche</p>
+            <a href="{{ url_for('properties') }}" class="bg-primary hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300">
+                Voir tous les biens
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Quick Contact Modal -->
+<div id="contact-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+    <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 transform scale-95 transition-transform duration-300">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold text-gray-900">Contact Rapide</h3>
+            <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        
+        <form id="quick-contact-form">
+            <input type="hidden" id="property-id" name="property_id">
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nom</label>
+                <input type="text" name="name" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <input type="email" name="email" required class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Téléphone</label>
+                <input type="tel" name="phone" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                <textarea name="message" rows="3" class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Je suis intéressé(e) par ce bien..."></textarea>
+            </div>
+            <button type="submit" class="w-full bg-primary hover:bg-blue-800 text-white py-3 rounded-lg font-semibold transition-colors duration-300">
+                Envoyer le Message
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+// Sort functionality
+document.getElementById('sort-select').addEventListener('change', function() {
+    const sortValue = this.value;
+    const grid = document.getElementById('properties-grid');
+    const cards = Array.from(grid.children);
+    
+    cards.sort((a, b) => {
+        switch(sortValue) {
+            case 'price-asc':
+                return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+            case 'price-desc':
+                return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+            case 'surface-desc':
+                return parseFloat(b.dataset.surface) - parseFloat(a.dataset.surface);
+            case 'newest':
+            default:
+                return new Date(b.dataset.date) - new Date(a.dataset.date);
+        }
+    });
+    
+    cards.forEach(card => grid.appendChild(card));
+});
+
+// Favorite functionality
+document.querySelectorAll('.favorite-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const icon = this.querySelector('i');
+        if (icon.classList.contains('far')) {
+            icon.classList.remove('far');
+            icon.classList.add('fas');
+            this.classList.add('text-red-500');
+        } else {
+            icon.classList.remove('fas');
+            icon.classList.add('far');
+            this.classList.remove('text-red-500');
+        }
+    });
+});
+
+// Quick contact modal
+const modal = document.getElementById('contact-modal');
+const closeModal = document.getElementById('close-modal');
+
+document.querySelectorAll('.contact-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const propertyId = this.dataset.propertyId;
+        const propertyTitle = this.dataset.propertyTitle;
+        
+        document.getElementById('property-id').value = propertyId;
+        document.querySelector('#quick-contact-form textarea[name="message"]').value = 
+            `Je suis intéressé(e) par le bien "${propertyTitle}". Pouvez-vous me contacter pour plus d'informations ?`;
+        
+        modal.classList.remove('hidden');
+        modal.querySelector('.bg-white').classList.remove('scale-95');
+        modal.querySelector('.bg-white').classList.add('scale-100');
+    });
+});
+
+closeModal.addEventListener('click', function() {
+    modal.querySelector('.bg-white').classList.remove('scale-100');
+    modal.querySelector('.bg-white').classList.add('scale-95');
+    setTimeout(() => modal.classList.add('hidden'), 300);
+});
+
+modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+        closeModal.click();
+    }
+});
+
+// Quick contact form submission with WhatsApp integration
+document.getElementById('quick-contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Show loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.innerHTML;
+    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi...';
+    submitBtn.disabled = true;
+    
+    // Prepare form data
+    const formData = {
+        name: this.querySelector('[name="name"]').value,
+        email: this.querySelector('[name="email"]').value,
+        phone: this.querySelector('[name="phone"]').value,
+        subject: 'Demande d\'information sur un bien',
+        message: this.querySelector('[name="message"]').value,
+        property_id: this.querySelector('[name="property_id"]').value
+    };
+    
+    fetch('/api/send-whatsapp', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Show success message
+            alert('Message envoyé avec succès! Redirection vers WhatsApp...');
+            
+            // Close modal and reset form
+            closeModal.click();
+            this.reset();
+            
+            // Redirect to WhatsApp after 1 second
+            setTimeout(() => {
+                window.open(data.whatsapp_url, '_blank');
+            }, 1000);
+        } else {
+            alert(data.message || 'Erreur lors de l\'envoi du message.');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Erreur lors de l\'envoi du message. Veuillez réessayer.');
+    })
+    .finally(() => {
+        // Restore button
+        submitBtn.innerHTML = originalText;
+        submitBtn.disabled = false;
+    });
+});
+</script>
+{% endblock %}

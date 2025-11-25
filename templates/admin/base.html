@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Administration - RK IMMO{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#f59e0b',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Custom Admin CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="font-poppins bg-gray-100">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
+        <!-- Logo -->
+        <div class="flex items-center justify-center h-16 bg-primary">
+            <div class="flex items-center">
+                <i class="fas fa-home text-white text-2xl mr-2"></i>
+                <span class="text-xl font-bold text-white">RK IMMO</span>
+            </div>
+        </div>
+        
+        <!-- Navigation -->
+        <nav class="mt-8">
+            <div class="px-4 space-y-2">
+                <a href="{{ url_for('admin_dashboard') }}" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 {{ 'bg-primary text-white' if request.endpoint == 'admin_dashboard' }}">
+                    <i class="fas fa-tachometer-alt mr-3"></i>
+                    <span>Tableau de Bord</span>
+                </a>
+                
+                <a href="{{ url_for('admin_properties') }}" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300 {{ 'bg-primary text-white' if request.endpoint == 'admin_properties' }}">
+                    <i class="fas fa-home mr-3"></i>
+                    <span>Propriétés</span>
+                </a>
+                
+                <a href="#" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300">
+                    <i class="fas fa-envelope mr-3"></i>
+                    <span>Messages</span>
+                    <span class="ml-auto bg-red-500 text-white text-xs px-2 py-1 rounded-full">3</span>
+                </a>
+                
+                <a href="#" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300">
+                    <i class="fas fa-users mr-3"></i>
+                    <span>Clients</span>
+                </a>
+                
+                <a href="#" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300">
+                    <i class="fas fa-chart-bar mr-3"></i>
+                    <span>Rapports</span>
+                </a>
+                
+                <a href="#" 
+                   class="flex items-center px-4 py-3 text-gray-700 rounded-lg hover:bg-primary hover:text-white transition-colors duration-300">
+                    <i class="fas fa-cog mr-3"></i>
+                    <span>Paramètres</span>
+                </a>
+            </div>
+            
+            <!-- Divider -->
+            <div class="my-6 border-t border-gray-200"></div>
+            
+            <!-- Quick Actions -->
+            <div class="px-4">
+                <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Actions Rapides</h3>
+                <div class="space-y-2">
+                    <a href="{{ url_for('admin_add_property') }}" 
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fas fa-plus mr-3 text-accent"></i>
+                        <span>Ajouter un Bien</span>
+                    </a>
+                    
+                    <a href="#" 
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fas fa-upload mr-3 text-secondary"></i>
+                        <span>Import CSV</span>
+                    </a>
+                    
+                    <a href="#" 
+                       class="flex items-center px-4 py-2 text-sm text-gray-700 rounded-lg hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fas fa-download mr-3 text-purple-500"></i>
+                        <span>Export Données</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- User Info -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-50">
+            <div class="flex items-center">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=50&q=80" 
+                     alt="Admin" 
+                     class="w-10 h-10 rounded-full mr-3">
+                <div class="flex-1">
+                    <p class="text-sm font-semibold text-gray-900">Admin</p>
+                    <p class="text-xs text-gray-500">Administrateur</p>
+                </div>
+                <a href="{{ url_for('admin_logout') }}" 
+                   class="text-gray-500 hover:text-red-500 transition-colors duration-300"
+                   title="Déconnexion">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Bar -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="flex items-center justify-between px-6 py-4">
+                <!-- Mobile menu button -->
+                <button class="lg:hidden text-gray-500 hover:text-gray-700" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                
+                <!-- Search -->
+                <div class="flex-1 max-w-md mx-4">
+                    <div class="relative">
+                        <input type="text" 
+                               placeholder="Rechercher..." 
+                               class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        <i class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    </div>
+                </div>
+                
+                <!-- Top Bar Actions -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notifications -->
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-gray-700 relative" id="notifications-btn">
+                            <i class="fas fa-bell text-xl"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">3</span>
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div class="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg border hidden" id="notifications-dropdown">
+                            <div class="p-4 border-b">
+                                <h3 class="font-semibold text-gray-900">Notifications</h3>
+                            </div>
+                            <div class="max-h-64 overflow-y-auto">
+                                <div class="p-4 hover:bg-gray-50 border-b">
+                                    <div class="flex items-start">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full mt-2 mr-3"></div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-medium text-gray-900">Nouveau contact reçu</p>
+                                            <p class="text-xs text-gray-500">Marie Dubois - Il y a 5 min</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 hover:bg-gray-50 border-b">
+                                    <div class="flex items-start">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2 mr-3"></div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-medium text-gray-900">Bien vendu</p>
+                                            <p class="text-xs text-gray-500">Appartement Paris 15ème - Il y a 1h</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="p-4 hover:bg-gray-50">
+                                    <div class="flex items-start">
+                                        <div class="w-2 h-2 bg-yellow-500 rounded-full mt-2 mr-3"></div>
+                                        <div class="flex-1">
+                                            <p class="text-sm font-medium text-gray-900">Visite programmée</p>
+                                            <p class="text-xs text-gray-500">Maison Neuilly - Demain 14h</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="p-4 border-t">
+                                <a href="#" class="text-sm text-primary hover:text-blue-800">Voir toutes les notifications</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Quick Add -->
+                    <a href="{{ url_for('admin_add_property') }}" 
+                       class="bg-primary hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-300">
+                        <i class="fas fa-plus mr-2"></i>
+                        Ajouter
+                    </a>
+                    
+                    <!-- View Site -->
+                    <a href="{{ url_for('index') }}" 
+                       target="_blank"
+                       class="text-gray-500 hover:text-gray-700 transition-colors duration-300"
+                       title="Voir le site">
+                        <i class="fas fa-external-link-alt text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+        
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="px-6 py-4">
+                    {% for category, message in messages %}
+                        <div class="mb-4 p-4 rounded-lg {% if category == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %} animate__animated animate__fadeInDown">
+                            <div class="flex items-center">
+                                <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} mr-2"></i>
+                                <span>{{ message }}</span>
+                                <button class="ml-auto text-lg font-bold" onclick="this.parentElement.parentElement.remove()">×</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Page Content -->
+        <main class="p-6">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <!-- Mobile Sidebar Overlay -->
+    <div class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden" id="sidebar-overlay"></div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+        
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebar-overlay');
+        
+        mobileMenuBtn.addEventListener('click', function() {
+            sidebar.classList.toggle('-translate-x-full');
+            sidebarOverlay.classList.toggle('hidden');
+        });
+        
+        sidebarOverlay.addEventListener('click', function() {
+            sidebar.classList.add('-translate-x-full');
+            sidebarOverlay.classList.add('hidden');
+        });
+        
+        // Notifications dropdown
+        const notificationsBtn = document.getElementById('notifications-btn');
+        const notificationsDropdown = document.getElementById('notifications-dropdown');
+        
+        notificationsBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            notificationsDropdown.classList.toggle('hidden');
+        });
+        
+        document.addEventListener('click', function() {
+            notificationsDropdown.classList.add('hidden');
+        });
+        
+        // Auto-hide flash messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const alerts = document.querySelectorAll('.animate__fadeInDown');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.style.opacity = '0';
+                    alert.style.transform = 'translateY(-20px)';
+                    setTimeout(() => alert.remove(), 300);
+                }, 5000);
+            });
+        });
+        
+        // Search functionality
+        const searchInput = document.querySelector('input[placeholder="Rechercher..."]');
+        if (searchInput) {
+            searchInput.addEventListener('input', function() {
+                // Implement search functionality here
+                console.log('Searching for:', this.value);
+            });
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+            
+            // Ctrl/Cmd + N for new property
+            if ((e.ctrlKey || e.metaKey) && e.key === 'n') {
+                e.preventDefault();
+                window.location.href = "{{ url_for('admin_add_property') }}";
+            }
+        });
+    </script>
+    
+    {% block extra_scripts %}{% endblock %}
+</body>
+</html>

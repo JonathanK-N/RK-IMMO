@@ -3,125 +3,459 @@
 {% block title %}Contact - RK IMMO{% endblock %}
 
 {% block content %}
-<section class="contact-header">
-    <div class="container">
-        <h1>Contactez-Nous</h1>
-        <p>Notre équipe est à votre disposition pour tous vos projets immobiliers à Kinshasa</p>
+<!-- Page Header -->
+<section class="bg-gradient-to-r from-primary to-blue-900 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-5xl font-bold mb-4 animate__animated animate__fadeInUp">Contactez-Nous</h1>
+        <p class="text-xl animate__animated animate__fadeInUp animate__delay-1s">Notre équipe d'experts est à votre disposition</p>
     </div>
 </section>
 
-<section class="contact-content section">
-    <div class="container">
-        <div class="contact__grid">
-            <div class="contact__info">
-                <h2>RK IMMO Kinshasa</h2>
-                <p class="contact__description">
-                    Spécialiste de l'immobilier de prestige à Kinshasa, nous vous accompagnons dans tous vos projets : 
-                    achat, vente, location et gestion locative.
-                </p>
+<!-- Contact Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <!-- Contact Form -->
+            <div class="bg-white rounded-2xl p-8 shadow-lg" data-aos="fade-right">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Envoyez-nous un Message</h2>
                 
-                <div class="contact__details">
-                    <div class="contact__item">
-                        <i class="fas fa-map-marker-alt"></i>
+                <form action="{{ url_for('contact') }}" method="POST" class="space-y-6" id="contact-form">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <h4>Adresse</h4>
-                            <p>Avenue des Aviateurs, Gombe<br>Kinshasa, République Démocratique du Congo</p>
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-2">
+                                Nom complet <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" 
+                                   id="name" 
+                                   name="name" 
+                                   required 
+                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                                   placeholder="Votre nom complet">
                         </div>
-                    </div>
-                    
-                    <div class="contact__item">
-                        <i class="fas fa-phone"></i>
+                        
                         <div>
-                            <h4>Téléphone</h4>
-                            <p>+243 81 234 5678<br>+243 99 876 5432</p>
+                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" 
+                                   id="email" 
+                                   name="email" 
+                                   required 
+                                   class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                                   placeholder="votre@email.com">
                         </div>
                     </div>
                     
-                    <div class="contact__item">
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>contact@rkimmo.cd<br>info@rkimmo.cd</p>
-                        </div>
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
+                            Téléphone
+                        </label>
+                        <input type="tel" 
+                               id="phone" 
+                               name="phone" 
+                               class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
+                               placeholder="+243 84 24 65 238">
                     </div>
                     
-                    <div class="contact__item">
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h4>Horaires</h4>
-                            <p>Lun - Ven: 8h00 - 17h00<br>Sam: 9h00 - 13h00</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="contact__social">
-                    <h4>Suivez-nous</h4>
-                    <div class="social__links">
-                        <a href="#" class="social__link"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="social__link"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="social__link"><i class="fab fa-linkedin"></i></a>
-                        <a href="#" class="social__link"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="contact__form-container">
-                <form class="contact__form" id="contact-form">
-                    <h3>Envoyez-nous un message</h3>
-                    
-                    <div class="form__row">
-                        <div class="form__group">
-                            <input type="text" class="form__input" id="contact-name" placeholder="Nom complet" required>
-                        </div>
-                        <div class="form__group">
-                            <input type="email" class="form__input" id="contact-email" placeholder="Email" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form__group">
-                        <input type="tel" class="form__input" id="contact-phone" placeholder="Téléphone">
-                    </div>
-                    
-                    <div class="form__group">
-                        <select class="form__input" id="contact-subject" required>
-                            <option value="">Sujet de votre demande</option>
-                            <option value="Achat">Achat d'une propriété</option>
-                            <option value="Vente">Vente d'une propriété</option>
-                            <option value="Location">Location</option>
-                            <option value="Gestion">Gestion locative</option>
-                            <option value="Evaluation">Évaluation</option>
+                    <div>
+                        <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">
+                            Sujet <span class="text-red-500">*</span>
+                        </label>
+                        <select id="subject" 
+                                name="subject" 
+                                required 
+                                class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300">
+                            <option value="">Sélectionnez un sujet</option>
+                            <option value="Demande d'information générale">Demande d'information générale</option>
+                            <option value="Demande de visite">Demande de visite</option>
+                            <option value="Estimation de bien">Estimation de bien</option>
+                            <option value="Vente de bien">Vente de bien</option>
+                            <option value="Location de bien">Location de bien</option>
+                            <option value="Investissement immobilier">Investissement immobilier</option>
                             <option value="Autre">Autre</option>
                         </select>
                     </div>
                     
-                    <div class="form__group">
-                        <textarea class="form__input" id="contact-message" placeholder="Votre message" rows="6" required></textarea>
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700 mb-2">
+                            Message <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="message" 
+                                  name="message" 
+                                  rows="6" 
+                                  required 
+                                  class="w-full border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 resize-none"
+                                  placeholder="Décrivez votre projet ou votre demande..."></textarea>
                     </div>
                     
-                    <button type="submit" class="form__btn">
-                        <i class="fas fa-paper-plane"></i>
-                        Envoyer le message
+                    <!-- RGPD Consent -->
+                    <div class="flex items-start">
+                        <input type="checkbox" 
+                               id="consent" 
+                               name="consent" 
+                               required 
+                               class="mt-1 mr-3 custom-checkbox">
+                        <label for="consent" class="text-sm text-gray-600">
+                            J'accepte que mes données personnelles soient utilisées pour traiter ma demande. 
+                            <a href="#" class="text-primary hover:underline">Politique de confidentialité</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" 
+                            class="w-full bg-primary hover:bg-blue-800 text-white py-4 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Envoyer le Message
                     </button>
                 </form>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="space-y-8" data-aos="fade-left">
+                <!-- Contact Details -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Nos Coordonnées</h3>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Adresse</h4>
+                                <p class="text-gray-600">13 bis, avenue Lamera, Quartier Socimat, Commune Gombe, RD Congo<br>Kinshasa, République Démocratique du Congo</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-secondary text-white w-12 h-12 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Téléphone</h4>
+                                <p class="text-gray-600">
+                                    <a href="tel:+243842465238" class="hover:text-primary transition-colors duration-300">+243 84 24 65 238</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-accent text-white w-12 h-12 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Email</h4>
+                                <p class="text-gray-600">
+                                    <a href="mailto:info.rkimmo@gmail.com" class="hover:text-primary transition-colors duration-300">info.rkimmo@gmail.com</a>
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start">
+                            <div class="bg-purple-600 text-white w-12 h-12 rounded-full flex items-center justify-center mr-4 flex-shrink-0">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-900 mb-1">Horaires</h4>
+                                <div class="text-gray-600 text-sm">
+                                    <p>Lundi - Vendredi: 8h00 - 17h00</p>
+                                    <p>Samedi: 8h00 - 14h00</p>
+                                    <p>Dimanche: Fermé</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Social Media -->
+                <div class="bg-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-6">Suivez-nous</h3>
+                    
+                    <div class="grid grid-cols-2 gap-4">
+                        <a href="#" class="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors duration-300">
+                            <i class="fab fa-facebook-f mr-2"></i>
+                            Facebook
+                        </a>
+                        <a href="#" class="flex items-center justify-center bg-blue-400 hover:bg-blue-500 text-white py-3 rounded-lg transition-colors duration-300">
+                            <i class="fab fa-twitter mr-2"></i>
+                            Twitter
+                        </a>
+                        <a href="#" class="flex items-center justify-center bg-pink-600 hover:bg-pink-700 text-white py-3 rounded-lg transition-colors duration-300">
+                            <i class="fab fa-instagram mr-2"></i>
+                            Instagram
+                        </a>
+                        <a href="#" class="flex items-center justify-center bg-blue-800 hover:bg-blue-900 text-white py-3 rounded-lg transition-colors duration-300">
+                            <i class="fab fa-linkedin-in mr-2"></i>
+                            LinkedIn
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- WhatsApp Contact -->
+                <div class="bg-gradient-to-r from-green-500 to-green-600 text-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Contact WhatsApp</h3>
+                    <p class="mb-4">Contactez-nous directement sur WhatsApp pour une réponse rapide et personnalisée</p>
+                    <a href="https://wa.me/243842465238?text=Bonjour%20RK%20IMMO%2C%20j%27aimerais%20avoir%20des%20informations%20sur%20vos%20services%20immobiliers." 
+                       target="_blank"
+                       class="inline-flex items-center bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-whatsapp mr-2"></i>
+                        Ouvrir WhatsApp
+                    </a>
+                </div>
+                
+                <!-- Emergency Contact -->
+                <div class="bg-gradient-to-r from-red-500 to-red-600 text-white rounded-2xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold mb-4">Urgence Immobilière</h3>
+                    <p class="mb-4">Pour toute urgence en dehors des heures d'ouverture</p>
+                    <a href="tel:+243842465238" class="inline-flex items-center bg-white text-red-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fas fa-phone mr-2"></i>
+                        Appel d'Urgence
+                    </a>
+                </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="map-section">
-    <div class="container">
-        <h2>Notre Localisation</h2>
-        <div class="map__container">
-            <div class="map__placeholder">
-                <i class="fas fa-map-marked-alt"></i>
-                <h3>Gombe, Kinshasa</h3>
-                <p>Avenue des Aviateurs<br>République Démocratique du Congo</p>
+<!-- Map Section -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Notre Localisation</h2>
+            <p class="text-xl text-gray-600">Venez nous rendre visite dans nos bureaux</p>
+        </div>
+        
+        <div class="bg-gray-200 rounded-2xl h-96 flex items-center justify-center" data-aos="fade-up" data-aos-delay="200">
+            <div class="text-center text-gray-500">
+                <i class="fas fa-map-marked-alt text-6xl mb-4"></i>
+                <h3 class="text-2xl font-bold mb-2">Carte Interactive</h3>
+                <p>13 bis, avenue Lamera, Quartier Socimat, Commune Gombe</p>
+                <p class="text-sm mt-2">République Démocratique du Congo</p>
+                <button class="mt-4 bg-primary hover:bg-blue-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-300">
+                    <i class="fas fa-directions mr-2"></i>
+                    Obtenir l'Itinéraire
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Questions Fréquentes</h2>
+            <p class="text-xl text-gray-600">Trouvez rapidement les réponses à vos questions</p>
+        </div>
+        
+        <div class="space-y-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <button class="w-full text-left p-6 focus:outline-none faq-toggle" data-target="faq-1">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Comment estimer la valeur de mon bien ?</h3>
+                        <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div id="faq-1" class="hidden px-6 pb-6">
+                    <p class="text-gray-600">Nous proposons une estimation gratuite de votre bien. Contactez-nous pour prendre rendez-vous avec un de nos experts qui se déplacera chez vous pour évaluer votre propriété selon les critères du marché actuel.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <button class="w-full text-left p-6 focus:outline-none faq-toggle" data-target="faq-2">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Quels sont vos frais d'agence ?</h3>
+                        <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div id="faq-2" class="hidden px-6 pb-6">
+                    <p class="text-gray-600">Nos frais d'agence sont transparents et compétitifs. Pour une vente, ils représentent généralement 3 à 5% du prix de vente. Pour une location, ils correspondent à un mois de loyer. Contactez-nous pour un devis personnalisé.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <button class="w-full text-left p-6 focus:outline-none faq-toggle" data-target="faq-3">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Combien de temps pour vendre un bien ?</h3>
+                        <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div id="faq-3" class="hidden px-6 pb-6">
+                    <p class="text-gray-600">Le délai de vente dépend de plusieurs facteurs : localisation, prix, état du bien, marché local. En moyenne, nos biens se vendent entre 2 et 6 mois. Notre expertise nous permet d'optimiser ce délai.</p>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <button class="w-full text-left p-6 focus:outline-none faq-toggle" data-target="faq-4">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold text-gray-900">Proposez-vous un accompagnement juridique ?</h3>
+                        <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                    </div>
+                </button>
+                <div id="faq-4" class="hidden px-6 pb-6">
+                    <p class="text-gray-600">Oui, nous travaillons avec des notaires et avocats spécialisés en droit immobilier. Nous vous accompagnons dans toutes les démarches juridiques et administratives de votre transaction.</p>
+                </div>
             </div>
         </div>
     </div>
 </section>
 {% endblock %}
 
-{% block scripts %}
-<script src="{{ url_for('static', filename='js/contact.js') }}"></script>
+{% block extra_scripts %}
+<!-- WhatsApp Auto-redirect -->
+{% if whatsapp_url %}
+<script>
+// Redirection automatique vers WhatsApp après soumission du formulaire
+window.addEventListener('load', function() {
+    // Afficher une notification de succès
+    Utils.showNotification('Message envoyé! Redirection vers WhatsApp...', 'success');
+    
+    // Rediriger vers WhatsApp après 2 secondes
+    setTimeout(function() {
+        window.open('{{ whatsapp_url }}', '_blank');
+    }, 2000);
+});
+</script>
+{% endif %}
+
+<script>
+// FAQ Toggle functionality
+document.querySelectorAll('.faq-toggle').forEach(button => {
+    button.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-target');
+        const target = document.getElementById(targetId);
+        const icon = this.querySelector('i');
+        
+        if (target.classList.contains('hidden')) {
+            // Close all other FAQs
+            document.querySelectorAll('[id^="faq-"]').forEach(faq => {
+                if (faq !== target) {
+                    faq.classList.add('hidden');
+                    const otherIcon = document.querySelector(`[data-target="${faq.id}"] i`);
+                    otherIcon.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Open this FAQ
+            target.classList.remove('hidden');
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            // Close this FAQ
+            target.classList.add('hidden');
+            icon.style.transform = 'rotate(0deg)';
+        }
+    });
+});
+
+// Form validation and submission with WhatsApp integration
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Basic validation
+    const requiredFields = this.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!field.value.trim()) {
+            field.classList.add('border-red-500');
+            isValid = false;
+        } else {
+            field.classList.remove('border-red-500');
+            field.classList.add('border-green-500');
+        }
+    });
+    
+    if (isValid) {
+        // Show loading state
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Envoi en cours...';
+        submitBtn.disabled = true;
+        
+        // Prepare form data
+        const formData = {
+            name: this.querySelector('[name="name"]').value,
+            email: this.querySelector('[name="email"]').value,
+            phone: this.querySelector('[name="phone"]').value,
+            subject: this.querySelector('[name="subject"]').value,
+            message: this.querySelector('[name="message"]').value,
+            property_id: this.querySelector('[name="property_id"]')?.value
+        };
+        
+        // Send via AJAX
+        fetch('/api/send-whatsapp', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show success message
+                Utils.showNotification('Message envoyé avec succès! Redirection vers WhatsApp...', 'success');
+                
+                // Reset form
+                this.reset();
+                
+                // Redirect to WhatsApp after 2 seconds
+                setTimeout(() => {
+                    window.open(data.whatsapp_url, '_blank');
+                    Utils.showNotification('WhatsApp ouvert! Vous pouvez maintenant envoyer le message.', 'info');
+                }, 2000);
+            } else {
+                Utils.showNotification(data.message || 'Erreur lors de l\'envoi', 'error');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Utils.showNotification('Erreur lors de l\'envoi du message', 'error');
+        })
+        .finally(() => {
+            // Restore button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        });
+    } else {
+        Utils.showNotification('Veuillez remplir tous les champs obligatoires', 'error');
+    }
+});
+
+// Real-time validation
+document.querySelectorAll('#contact-form input, #contact-form textarea, #contact-form select').forEach(field => {
+    field.addEventListener('blur', function() {
+        if (this.hasAttribute('required')) {
+            if (!this.value.trim()) {
+                this.classList.add('border-red-500');
+                this.classList.remove('border-green-500');
+            } else {
+                this.classList.remove('border-red-500');
+                this.classList.add('border-green-500');
+            }
+        }
+    });
+    
+    // Email validation
+    if (field.type === 'email') {
+        field.addEventListener('blur', function() {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (this.value && !emailRegex.test(this.value)) {
+                this.classList.add('border-red-500');
+                this.classList.remove('border-green-500');
+            }
+        });
+    }
+    
+    // Phone validation
+    if (field.type === 'tel') {
+        field.addEventListener('blur', function() {
+            const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+            if (this.value && !phoneRegex.test(this.value)) {
+                this.classList.add('border-red-500');
+                this.classList.remove('border-green-500');
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

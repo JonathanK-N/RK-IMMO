@@ -1,74 +1,245 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}RK IMMO - Immobilier de Prestige{% endblock %}</title>
+    <title>{% block title %}RK IMMO - Votre Partenaire Immobilier{% endblock %}</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e3a8a',
+                        secondary: '#f59e0b',
+                        accent: '#10b981',
+                        dark: '#1f2937'
+                    },
+                    fontFamily: {
+                        'poppins': ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    {% block extra_head %}{% endblock %}
 </head>
-<body>
-    <header class="header" id="header">
-        <nav class="nav container">
-            <a href="/" class="nav__logo">
-                <i class="fas fa-home"></i>
-                RK IMMO
-            </a>
-            
-            <div class="nav__menu" id="nav-menu">
-                <ul class="nav__list">
-                    <li class="nav__item">
-                        <a href="/" class="nav__link">Accueil</a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="/proprietes" class="nav__link">Propriétés</a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="/contact" class="nav__link">Contact</a>
-                    </li>
-                </ul>
+<body class="font-poppins bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg fixed w-full top-0 z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <div class="flex-shrink-0">
+                    <a href="{{ url_for('index') }}" class="flex items-center">
+                        <i class="fas fa-home text-primary text-2xl mr-2"></i>
+                        <span class="text-2xl font-bold text-primary">RK IMMO</span>
+                    </a>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="{{ url_for('index') }}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Accueil</a>
+                        <a href="{{ url_for('properties') }}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Propriétés</a>
+                        <a href="{{ url_for('contact') }}" class="nav-link text-gray-700 hover:text-primary px-3 py-2 rounded-md text-sm font-medium transition-colors duration-300">Contact</a>
+                        <a href="{{ url_for('admin_login') }}" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors duration-300">
+                            <i class="fas fa-user mr-1"></i> Admin
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="mobile-menu-button text-gray-700 hover:text-primary focus:outline-none focus:text-primary" id="mobile-menu-btn">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
             </div>
-            
-            <div class="nav__toggle" id="nav-toggle">
-                <i class="fas fa-bars"></i>
+        </div>
+        
+        <!-- Mobile Menu -->
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white shadow-lg">
+                <a href="{{ url_for('index') }}" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-300">Accueil</a>
+                <a href="{{ url_for('properties') }}" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-300">Propriétés</a>
+                <a href="{{ url_for('contact') }}" class="block px-3 py-2 text-gray-700 hover:text-primary transition-colors duration-300">Contact</a>
+                <a href="{{ url_for('admin_login') }}" class="block px-3 py-2 text-primary font-medium">Admin</a>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <main>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed top-20 right-4 z-50 space-y-2">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} animate__animated animate__fadeInRight">
+                        <div class="flex items-center p-4 rounded-lg shadow-lg {% if category == 'success' %}bg-green-100 text-green-800{% else %}bg-red-100 text-red-800{% endif %}">
+                            <i class="fas {% if category == 'success' %}fa-check-circle{% else %}fa-exclamation-circle{% endif %} mr-2"></i>
+                            <span>{{ message }}</span>
+                            <button class="ml-auto text-lg font-bold" onclick="this.parentElement.parentElement.remove()">×</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Main Content -->
+    <main class="pt-16">
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer__content">
-                <div class="footer__section">
-                    <h3>RK IMMO</h3>
-                    <p>Votre partenaire immobilier de confiance</p>
+    <!-- Footer -->
+    <footer class="bg-dark text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Company Info -->
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-home text-secondary text-2xl mr-2"></i>
+                        <span class="text-2xl font-bold">RK IMMO</span>
+                    </div>
+                    <p class="text-gray-300 mb-4">Votre partenaire de confiance pour tous vos projets immobiliers à Kinshasa et en RD Congo. Nous vous accompagnons dans l'achat, la vente et la location de biens immobiliers.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-secondary transition-colors duration-300">
+                            <i class="fab fa-facebook-f text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-secondary transition-colors duration-300">
+                            <i class="fab fa-twitter text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-secondary transition-colors duration-300">
+                            <i class="fab fa-instagram text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-300 hover:text-secondary transition-colors duration-300">
+                            <i class="fab fa-linkedin-in text-xl"></i>
+                        </a>
+                        <a href="https://wa.me/243842465238" target="_blank" class="text-gray-300 hover:text-green-400 transition-colors duration-300" title="Contactez-nous sur WhatsApp">
+                            <i class="fab fa-whatsapp text-xl"></i>
+                        </a>
+                    </div>
                 </div>
-                <div class="footer__section">
-                    <h4>Contact</h4>
-                    <p><i class="fas fa-phone"></i> +243 81 234 5678</p>
-                    <p><i class="fas fa-envelope"></i> contact@rkimmo.cd</p>
-                    <p><i class="fas fa-map-marker-alt"></i> Gombe, Kinshasa - RDC</p>
+                
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Liens Rapides</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('index') }}" class="text-gray-300 hover:text-secondary transition-colors duration-300">Accueil</a></li>
+                        <li><a href="{{ url_for('properties') }}" class="text-gray-300 hover:text-secondary transition-colors duration-300">Propriétés</a></li>
+                        <li><a href="{{ url_for('contact') }}" class="text-gray-300 hover:text-secondary transition-colors duration-300">Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-secondary transition-colors duration-300">À propos</a></li>
+                    </ul>
                 </div>
-                <div class="footer__section">
-                    <h4>Suivez-nous</h4>
-                    <div class="footer__social">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">Contact</h3>
+                    <div class="space-y-2 text-gray-300">
+                        <div class="flex items-center">
+                            <i class="fas fa-map-marker-alt mr-2"></i>
+                            <span>13 bis, avenue Lamera, Quartier Socimat, Commune Gombe, RD Congo</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-phone mr-2"></i>
+                            <span>+243 84 246 52 28</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fab fa-whatsapp mr-2 text-green-500"></i>
+                            <a href="https://wa.me/243842465238" target="_blank" class="hover:text-secondary transition-colors duration-300">+243 84 24 65 238</a>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-envelope mr-2"></i>
+                            <span>info.rkimmo@gmail.com</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-2"></i>
+                            <span>Lun-Ven: 8h-17h, Sam: 8h-14h</span>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="footer__bottom">
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
                 <p>&copy; 2024 RK IMMO. Tous droits réservés.</p>
             </div>
         </div>
     </footer>
 
+    <!-- WhatsApp Floating Button -->
+    <div class="fixed bottom-4 left-4 z-50">
+        <a href="https://wa.me/243842465238?text=Bonjour%20RK%20IMMO%2C%20j%27aimerais%20avoir%20des%20informations%20sur%20vos%20services%20immobiliers." 
+           target="_blank"
+           class="bg-green-500 hover:bg-green-600 text-white rounded-full w-14 h-14 flex items-center justify-center shadow-lg transition-all duration-300 animate-pulse hover:animate-none hover:scale-110"
+           title="Contactez-nous sur WhatsApp">
+            <i class="fab fa-whatsapp text-2xl"></i>
+        </a>
+    </div>
+
+    <!-- Chatbot -->
+    <div id="chatbot-container" class="fixed bottom-4 right-4 z-50">
+        <!-- Chatbot Button -->
+        <button id="chatbot-btn" class="bg-primary hover:bg-blue-800 text-white rounded-full w-16 h-16 flex items-center justify-center shadow-lg transition-all duration-300 animate-pulse">
+            <i class="fas fa-comments text-xl"></i>
+        </button>
+        
+        <!-- Chatbot Window -->
+        <div id="chatbot-window" class="hidden absolute bottom-20 right-0 w-80 bg-white rounded-lg shadow-2xl border">
+            <div class="bg-primary text-white p-4 rounded-t-lg flex justify-between items-center">
+                <div class="flex items-center">
+                    <i class="fas fa-robot mr-2"></i>
+                    <span class="font-semibold">Assistant RK IMMO</span>
+                </div>
+                <button id="chatbot-close" class="text-white hover:text-gray-200">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="chatbot-messages" class="h-64 overflow-y-auto p-4 space-y-2">
+                <div class="bg-gray-100 p-3 rounded-lg">
+                    <p class="text-sm">Bonjour! Je suis l'assistant virtuel de RK IMMO. Comment puis-je vous aider?</p>
+                </div>
+            </div>
+            <div class="p-4 border-t">
+                <div class="flex">
+                    <input type="text" id="chatbot-input" placeholder="Tapez votre message..." class="flex-1 border rounded-l-lg px-3 py-2 focus:outline-none focus:border-primary">
+                    <button id="chatbot-send" class="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-blue-800 transition-colors duration-300">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    {% block scripts %}{% endblock %}
+    {% block extra_scripts %}{% endblock %}
+    
+    <script>
+        // Initialize AOS
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100
+        });
+    </script>
 </body>
 </html>
